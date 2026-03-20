@@ -6,14 +6,15 @@ import os
 from dotenv import load_dotenv
 from langchain_community.document_loaders import DirectoryLoader, TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_chroma import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
 
 load_dotenv()
 
 # Where ChromaDB will store its index on disk
-CHROMA_PERSIST_DIR = "data/chroma_db"
-RAG_DOCS_DIR = "data/rag_docs"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CHROMA_PERSIST_DIR = os.path.join(BASE_DIR, "data", "chroma_db")
+RAG_DOCS_DIR = os.path.join(BASE_DIR, "data", "rag_docs")
 
 def build_vector_store() -> Chroma:
     """

@@ -14,6 +14,7 @@ This agent does NOT fix anything — it only observes and reports.
 import json
 import os
 import pandas as pd
+from rapidfuzz import fuzz
 
 
 # ---------------------------------------------------------------------------
@@ -95,9 +96,10 @@ def build_cross_source_flags(crm_df: pd.DataFrame, oms_df: pd.DataFrame, tickets
     Compare company/account name values across the three sources and surface
     observations about inconsistent spelling, casing, or punctuation.
 
-    This is a heuristic textual comparison — no fuzzy matching is applied here.
-    That is Agent 3's job. This function simply documents what names appear in
-    each source so downstream agents have a clear picture of the problem.
+    Uses token_sort_ratio fuzzy matching (threshold ≥ 85) to determine whether
+    a normalised name from one source has a likely match in another. This catches
+    variants like "nexus dynamics inc." vs "nexus dynamics" that substring checks
+    would miss or over-match.
     """
     flags = []
 
@@ -116,10 +118,14 @@ def build_cross_source_flags(crm_df: pd.DataFrame, oms_df: pd.DataFrame, tickets
 
     all_norm = crm_norm | oms_norm | tick_norm
 
+    def fuzzy_match(name: str, name_set: set) -> bool:
+        """Return True if any entry in name_set scores ≥ 85 against name."""
+        return any(fuzz.token_sort_ratio(name, n) >= 85 for n in name_set)
+
     for name in sorted(all_norm):
-        in_crm  = any(name in n.lower() or n.lower() in name for n in crm_norm)
-        in_oms  = any(name in n.lower() or n.lower() in name for n in oms_norm)
-        in_tick = any(name in n.lower() or n.lower() in name for n in tick_norm)
+        in_crm  = fuzzy_match(name, crm_norm)
+        in_oms  = fuzzy_match(name, oms_norm)
+        in_tick = fuzzy_match(name, tick_norm)
 
         sources = [s for s, present in [("CRM", in_crm), ("OMS", in_oms), ("Tickets", in_tick)] if present]
         if len(sources) < 3:

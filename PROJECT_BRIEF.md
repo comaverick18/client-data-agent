@@ -83,3 +83,27 @@ Create RAG reference documents in `data/rag_docs/`, then build Agent 2: Readines
 ## Open Issues
 - Pydantic V1 deprecation warning present on run — harmless for now, revisit before deployment
 - RAG reference documents not yet created — required before Agent 2 can be built
+- LOW: requirements.txt is a Full Lockfile with Dev Packages in Production Shape
+  torch==2.10.0, sentence-transformers==5.3.0,
+  transformers==5.3.0, scikit-learn, scipy,
+  kubernetes==35.0.0, onnxruntime — all pinned and     
+  committed. This is fine for reproducibility, but     
+  torch alone is ~2GB and kubernetes is unrelated to   
+  this project. When deploying to Streamlit Cloud, this
+   will cause build failures or extreme slowness
+
+- LOW: human_approved Flag is Meaningless  
+  in Current State
+
+  # graph/pipeline.py:86-89
+  def _approve(state: PipelineState) ->       
+  PipelineState:
+      return {**state, "human_approved": True}
+  All gates auto-approve unconditionally. The 
+  flag is set but never read by any node or   
+  conditional edge. The human-in-the-loop     
+  design intent requires LangGraph interrupt()
+   or interrupt_before — this is worth        
+  implementing before agents 2-4 are built, so
+   the architecture actually reflects the     
+  design.
