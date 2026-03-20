@@ -9,9 +9,9 @@ Execution order:
     → human_approval
     → run_agent2   (Readiness Scorer — fully implemented)
     → human_approval
-    → run_agent3   (Normalizer — placeholder)
+    → run_agent3   (Normalizer — fully implemented)
     → human_approval
-    → run_agent4   (Report Generator — placeholder)
+    → run_agent4   (Insight Generator — fully implemented)
   END
 
 Each agent node receives the full pipeline state, mutates only its own
@@ -29,6 +29,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from typing import TypedDict
 from langgraph.graph import StateGraph, START, END
 from agents.agent2_scorer import run_agent2
+from agents.agent3_normalizer import run_agent3 as _run_agent3
+from agents.agent4_insight_generator import run_agent4 as _run_agent4
 
 
 # ---------------------------------------------------------------------------
@@ -47,12 +49,16 @@ class PipelineState(TypedDict):
         human_approved   — set to True by each approval gate before proceeding
         current_stage    — string label updated by each node for observability
     """
-    audit_findings:   dict
-    readiness_scores: dict
-    normalized_data:  dict
-    final_report:     str
-    human_approved:   bool
-    current_stage:    str
+    audit_findings:       dict
+    readiness_scores:     dict
+    normalized_data:      dict
+    inferred_schema:      dict
+    normalization_summary: dict
+    executive_metrics:    dict
+    risk_flags:           list
+    final_report:         str
+    human_approved:       bool
+    current_stage:        str
 
 
 # ---------------------------------------------------------------------------
@@ -109,37 +115,21 @@ def human_approval_3(state: PipelineState) -> PipelineState:
 
 
 # ---------------------------------------------------------------------------
-# Agent 3 — Normalizer (placeholder)
+# Agent 3 — Normalizer (fully implemented, imported above)
 # ---------------------------------------------------------------------------
 
 def run_agent3(state: PipelineState) -> PipelineState:
-    """
-    Placeholder: will merge all sources by client entity using fuzzy matching,
-    map fields to a canonical schema, and produce a unified dataset.
-    """
-    print("\n[Agent 3] Normalizer — not yet implemented.")
-    return {
-        **state,
-        "normalized_data": {},
-        "current_stage": "normalization_complete",
-    }
+    """Delegate to agents/agent3_normalizer.py::run_agent3()."""
+    return _run_agent3(state)
 
 
 # ---------------------------------------------------------------------------
-# Agent 4 — Report Generator (placeholder)
+# Agent 4 — Insight Generator (fully implemented, imported above)
 # ---------------------------------------------------------------------------
 
 def run_agent4(state: PipelineState) -> PipelineState:
-    """
-    Placeholder: will synthesise all prior outputs into a structured,
-    business-readable remediation report with field mapping recommendations.
-    """
-    print("\n[Agent 4] Report Generator — not yet implemented.")
-    return {
-        **state,
-        "final_report": "",
-        "current_stage": "report_complete",
-    }
+    """Delegate to agents/agent4_insight_generator.py::run_agent4()."""
+    return _run_agent4(state)
 
 
 # ---------------------------------------------------------------------------
@@ -191,12 +181,16 @@ def run_pipeline() -> PipelineState:
     """
     # Empty initial state — each agent populates its own keys
     initial_state: PipelineState = {
-        "audit_findings":   {},
-        "readiness_scores": {},
-        "normalized_data":  {},
-        "final_report":     "",
-        "human_approved":   False,
-        "current_stage":    "initialised",
+        "audit_findings":       {},
+        "readiness_scores":     {},
+        "normalized_data":      {},
+        "inferred_schema":      {},
+        "normalization_summary": {},
+        "executive_metrics":    {},
+        "risk_flags":           [],
+        "final_report":         "",
+        "human_approved":       False,
+        "current_stage":        "initialised",
     }
 
     app = build_graph().compile()

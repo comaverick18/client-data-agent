@@ -64,14 +64,14 @@ Approval gates between each agent handoff, visible in Streamlit UI.
 - Anthropic as primary LLM, Gemini as fallback
 
 ## Current Status
-- [x] System architecture diagram complete
-- [x] Development environment configured and verified
-- [x] All dependencies installed
-- [x] Anthropic API connected and tested
-- [x] GitHub repo created, `.env` protected, pushed to private repo
-- [x] Dummy data files created (crm_export.csv, oms_export.csv, tickets_export.json)
-- [x] Agent 1 (Data Auditor) built and verified working
-- [x] LangGraph pipeline skeleton built (graph/pipeline.py) with all 4 nodes and 3 approval gates wired and running end-to-end
+- ✅ System architecture diagram complete
+- ✅ Development environment configured and verified
+- ✅ All dependencies installed
+- ✅ Anthropic API connected and tested
+- ✅ GitHub repo created, `.env` protected, pushed to private repo
+- ✅ Dummy data files created (crm_export.csv, oms_export.csv, tickets_export.json)
+- ✅ Agent 1 (Data Auditor) built and verified working
+- ✅ LangGraph pipeline skeleton built (graph/pipeline.py) with all 4 nodes and 3 approval gates wired and running end-to-end
 - ✅ RAG reference documents created in data/rag_docs/
 - ✅ RAG engine built and verified (src/rag_engine.py)
 - ✅ Agent 2 (Readiness Scorer) built and verified working
@@ -81,14 +81,21 @@ Approval gates between each agent handoff, visible in Streamlit UI.
 - ✅ Absolute paths fixed in rag_engine.py
 - ✅ Fuzzy match logic fixed in Agent 1 (rapidfuzz)
 - ✅ API keys rotated, clean git history established
-- [ ] Agent 3 (Normalizer) not yet built
-- [ ] Agent 4 (Report Generator) not yet built
+- ✅ Agent 3 (Normalizer) built and verified — per-order join, order_id primary key, fuzzy company name fallback, dynamic schema inference via LLM
+- ✅ Agent 4 (Insight Generator) built and verified — exception rate 53.3%, high-priority ticket rate 50%, narrative report generated, 2 risk flags raised
+- ✅ Full pipeline runs end to end (all 4 agents + 3 approval gates)
+- ✅ config/schema.py updated to METRICS_CONTRACT
+- ✅ PipelineState TypedDict updated with all new keys
+- ✅ Fuzzy clustering fix applied — ACME/VERTEX/MERIDIAN variants now correctly collapsed via suffix stripping preprocessing
 
 ## Next Step
-Build Agent 3 — Normalizer in agents/agent3_normalizer.py
+Build Streamlit UI
 
 ## Open Issues
-- Pydantic V1 deprecation warning present on run — harmless for now, revisit before deployment
-- requirements.txt contains heavy packages (torch, kubernetes) — clean up before Streamlit deployment
+- "Happy path" / "unhappy path" are informal terms — rename to industry standard in all user-facing output: STP rate (straight-through processing rate) and exception rate
+- 'Orbital Sys.' and 'Orbital Systems' not collapsing in canonical map — abbreviation too short for suffix stripping to catch
+- 'Pinnacle Ind.' and 'Pinnacle Industries' not collapsing — same root cause
+- RAG engine loads embedding model 3x per pipeline run — optimize to single instance before deployment
 - Human approval gates are auto-approve no-ops — implement real LangGraph interrupt() before final demo
-- RAG engine loads embedding model 3 times per pipeline run — optimize to single instance before deployment
+- requirements.txt contains heavy packages (torch, kubernetes) — clean up before Streamlit Cloud deployment
+- Pydantic V1 deprecation warning on run — harmless for now, revisit before deployment
