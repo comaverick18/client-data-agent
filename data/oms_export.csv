@@ -1,0 +1,16 @@
+order_id,customer_name,product_sku,quantity,unit_price,order_date,delivery_status,region
+ORD-10041,ACME,SM-SAT-ENT-100,2,42000.00,2025-11-03,delivered,northeast
+ORD-10042,Nexus Dynamics Inc.,SM-SAT-MID-50,5,24000.00,2025-11-10,delivered,west_coast
+ORD-10043,orbital systems,SM-GROUND-CTRL,1,55000.00,2025-11-14,delivered,west_coast
+ORD-10044,Vertex Solutions LLC,SM-SAT-ENT-100,3,42000.00,2025-11-18,delivered,south_central
+ORD-10045,Pinnacle Industries,SM-SAT-MID-50,2,24000.00,2025-11-22,delivered,midwest
+ORD-10046,Atlas Networks Co.,SM-GROUND-CTRL,2,55000.00,2025-12-01,delivered,midwest
+ORD-10047,MERIDIAN TECH,SM-SAT-ENT-200,1,175000.00,2025-12-05,delivered,northeast
+ORD-10048,ACME,SM-SAT-MID-50,1,24000.00,2026-01-09,delivered,northeast
+ORD-10049,Nexus Dynamics Inc.,SM-SAT-ENT-200,1,120000.00,2026-01-15,delivered,west_coast
+ORD-10050,orbital systems,SM-SAT-MID-50,1,24000.00,2026-01-20,in_transit,west_coast
+ORD-10051,Vertex Solutions LLC,SM-SAT-ENT-100,1,42000.00,2026-02-02,delivered,south_central
+ORD-10052,MERIDIAN TECH,SM-GROUND-CTRL,1,55000.00,2026-02-17,delivered,northeast
+ORD-10053,Atlas Networks Co.,SM-SAT-MID-50,3,24000.00,2026-03-01,processing,midwest
+ORD-10054,Solaris Global Ltd,SM-SAT-ENT-100,1,42000.00,2026-03-10,in_transit,international
+ORD-10055,Pinnacle Industries,SM-GROUND-CTRL,1,55000.00,2026-03-14,processing,midwest

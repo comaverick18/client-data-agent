@@ -1,0 +1,16 @@
+client_id,company_name,contact_name,email,phone,contract_value,renewal_date,account_owner,status
+C001,Acme Corp,James Harrington,j.harrington@acmecorp.com,+1-212-555-0142,84000,2026-09-15,Sarah Okonkwo,Active
+C002,Nexus Dynamics,Priya Sharma,priya.sharma@nexusdyn.com,2125550198,120000,2026-11-01,Marcus Levin,Active
+C003,Orbital Systems,Tom Reeves,tom.reeves@orbitalsys.com,+1-415-555-0173,55000,2026-07-30,Sarah Okonkwo,Active
+C004,Vertex Solutions,Claudia Moreno,c.moreno@vertexsolutions.com,,210000,2027-01-15,James Okello,Active
+C005,Pinnacle Industries,Ben Cho,ben.cho@pinnacleindustries.com,+1-312-555-0209,47500,2026-06-01,Marcus Levin,Active
+C006,Atlas Networks,Rachel Dunn,rachel.dunn@atlasnet.com,3125550167,98000,2026-12-20,James Okello,Active
+C007,Meridian Tech,Lior Ben-David,l.bendavid@meridiantech.io,+1-646-555-0314,175000,2026-10-05,Sarah Okonkwo,Active
+C008,Solaris Global,Amara Diallo,amara.diallo@solarisglobal.com,6465550281,62000,2027-03-01,Marcus Levin,Active
+C009,ACME,James Harrington,jharrington@acme.com,212-555-0142,84000,2026-09-15,Sarah Okonkwo,Active
+C010,nexus dynamics,Priya Sharma,p.sharma@nexusdynamics.com,,118000,2026-11-01,Marcus Levin,Churned
+C011,Orbital Systems,Amanda Zhou,a.zhou@orbitalsys.com,+1-415-555-0173,55000,2026-07-30,Sarah Okonkwo,Active
+C012,VERTEX SOLUTIONS,Claudia Moreno,cmoreno@vertex.io,+1-713-555-0388,210000,2027-01-15,James Okello,Active
+C013,acme corp.,,,+1-212-555-0142,,2026-09-15,,Pending
+C014,Pinnacle Ind.,Ben Cho,b.cho@pinnacle-ind.com,312-555-0209,47500,,Marcus Levin,Active
+C015,solaris global,Amara Diallo,amara@solaris-global.net,646.555.0281,62000,2027-03-01,Marcus Levin,Active

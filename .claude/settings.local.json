@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(venv/Scripts/python.exe agents/agent1_auditor.py)",
+      "Bash(venv/Scripts/python.exe -c \"import langgraph; print\\(langgraph.__version__\\)\")",
+      "Bash(venv/Scripts/python.exe -c \"from langgraph.graph import StateGraph, START, END; print\\(''imports ok''\\)\")",
+      "Bash(venv/Scripts/python.exe graph/pipeline.py)"
+    ]
+  }
+}

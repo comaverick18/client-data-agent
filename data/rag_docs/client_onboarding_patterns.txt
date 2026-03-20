@@ -1,0 +1,99 @@
+CLIENT DATA ONBOARDING PATTERNS — INTERNAL OPS REFERENCE
+Revenue Operations & Strategy
+Last revised: 2025-Q4
+
+────────────────────────────────────────────────────────────
+OVERVIEW
+────────────────────────────────────────────────────────────
+This document captures recurring patterns observed during enterprise client
+data onboarding engagements. It is intended to help the data team quickly
+identify known problem categories and apply established remediation approaches
+rather than re-diagnosing from scratch each time.
+
+Client profile context: This document serves mid-market B2B SaaS companies
+across industries including logistics, energy, healthcare, and professional
+services. Typical deal sizes range from $25K to $250K ARR. The most common
+products are software subscriptions (recurring) and professional services
+engagements (one-time). Most clients operate across 2-4 internal systems
+that need to be reconciled during onboarding.
+
+────────────────────────────────────────────────────────────
+1. COMMON FIELD NAME VARIATIONS IN THE WILD
+────────────────────────────────────────────────────────────
+Company / account name:
+  cust_name, customer, client_name, account_name, company, org_name, entity
+
+Revenue / contract value:
+  ARR, MRR, TCV, deal_value, contract_amount, annual_value, rev
+
+Client identifier:
+  cust_id, acct_id, account_number, sfdc_id, crm_id, client_code
+
+Order / transaction date:
+  date, txn_date, purchase_date, created, order_ts, sale_date
+
+Ticket / issue status:
+  state, resolution_status, case_status, is_open, open_flag
+
+When ingesting a new source, always map inbound field names to canonical
+names before any downstream processing. Never assume two fields with
+different names refer to different concepts — check cardinality and sample
+values first.
+
+────────────────────────────────────────────────────────────
+2. COMMON DATA QUALITY ISSUES
+────────────────────────────────────────────────────────────
+Duplicate records with differing company names:
+  The same legal entity frequently appears under multiple spellings across
+  systems (e.g. "Acme Corp", "ACME", "acme corp.", "Acme Corporation").
+  These must be resolved to a single canonical name before joining sources.
+  Fuzzy string matching (token sort ratio ≥ 85) is a reliable first pass;
+  always surface low-confidence matches for human review.
+
+Missing client IDs:
+  CRM exports often contain rows where client_id is null, typically for
+  recently-created accounts or manual CSV imports that bypassed validation.
+  These records cannot be joined to OMS or ticketing data without remediation.
+  Flag them immediately — do not drop them silently.
+
+Inconsistent date formats:
+  A single CSV export may contain multiple date formats across rows if the
+  source system accepted freetext input (common in legacy CRMs). Typical
+  mix: ISO 8601, MM/DD/YYYY, DD-Mon-YYYY, and Excel serial numbers.
+  Always validate and normalise dates before computing durations or sorting.
+
+Phone number and currency formatting:
+  Phone fields frequently mix formats within the same export (+1-212-555-0142,
+  2125550142, 212.555.0142). Currency fields often arrive as formatted strings
+  ("$84,000") rather than numeric values. Both require normalisation before
+  the data can be treated as typed.
+
+────────────────────────────────────────────────────────────
+3. PAST CLIENT ONBOARDING SCENARIOS — LESSONS LEARNED
+────────────────────────────────────────────────────────────
+Scenario A — Logistics client, 3 source systems, 60-day onboarding
+  The client's CRM had 340 account records; their OMS had 290 matching
+  customer entries. The 50-record gap turned out to be a mix of: (1) churned
+  accounts removed from OMS but still in CRM, and (2) 12 records where
+  company names differed enough to break exact matching. Fuzzy matching
+  recovered 9 of the 12; the remaining 3 required manual review.
+  Lesson: never assume a count gap means missing data — always check whether
+  it is a matching failure before escalating to the client.
+
+Scenario B — Energy sector client, single CRM export, fast-track onboarding
+  The export contained a "contract_value" column populated with a mix of
+  numeric values and strings like "TBD" and "See attachment". Approximately
+  8% of rows were non-numeric, which silently caused aggregation queries to
+  return incorrect totals. The issue was not caught until the client disputed
+  a renewal report two weeks post-onboarding.
+  Lesson: always validate numeric fields for type consistency before any
+  aggregation. A null is safer than a coerced zero or a silently dropped row.
+
+Scenario C — Government contractor client, ticketing system only
+  The Zendesk export used a custom "account_name" field that was free-text
+  and populated inconsistently by agents (some used legal entity names, others
+  used project codes or internal nicknames). There was no client_id field at all.
+  Joining to CRM required a manual mapping table built by the CSM team.
+  Lesson: ticketing systems are the least-structured source type. Always audit
+  the account identifier field first — if it is free-text and agent-populated,
+  plan for a manual reconciliation step and scope the engagement accordingly.

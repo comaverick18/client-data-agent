@@ -1,0 +1,83 @@
+ENTERPRISE DATA DICTIONARY — BEST PRACTICES REFERENCE
+Data & Analytics Team
+Last revised: 2025-Q4
+
+────────────────────────────────────────────────────────────
+1. FIELD NAMING CONVENTIONS
+────────────────────────────────────────────────────────────
+All field names must follow snake_case formatting with no abbreviations,
+acronyms, or truncated words. The goal is for a field name to be
+self-describing without requiring a separate data dictionary lookup.
+
+  Correct:   company_name, contract_value, renewal_date
+  Incorrect: co_name, ContractVal, renewDt, ARR, cust_id
+
+Multi-word concepts must use full words joined by underscores:
+  account_owner (not acct_owner or accountOwner)
+  resolution_time_hours (not res_time or resolutionTime)
+
+Boolean fields must be prefixed with "is_" or "has_":
+  is_churned, has_sso_enabled
+
+Timestamp fields must be suffixed with "_at" for event-based fields
+and "_date" for calendar-based fields:
+  created_at, updated_at, renewal_date, order_date
+
+────────────────────────────────────────────────────────────
+2. REQUIRED FIELDS BY SOURCE TYPE
+────────────────────────────────────────────────────────────
+CRM (e.g. Salesforce):
+  client_id         — unique identifier, non-null, system-generated
+  company_name      — legal entity name, non-null
+  industry          — vertical classification (standardised picklist)
+  contract_value    — annual recurring revenue in USD, numeric, non-null
+  renewal_date      — ISO 8601 date (YYYY-MM-DD), non-null
+  account_owner     — internal owner name or employee ID, non-null
+  health_score      — numeric 0–100 composite score
+  subscription_tier — enum: Starter | Growth | Enterprise
+
+Order Management System:
+  order_id          — unique identifier, non-null, system-generated
+  client_id         — foreign key to CRM client_id, non-null
+  company_name      — denormalised for join resilience
+  order_date        — ISO 8601 date, non-null
+  product_name      — full product name (no SKU abbreviations)
+  quantity          — integer, non-null, minimum 1
+  unit_price        — numeric USD, non-null
+  total_value       — computed: quantity × unit_price, non-null
+  status            — enum: pending | processing | delivered | cancelled
+
+Support / Ticketing (e.g. Zendesk):
+  ticket_id         — unique identifier, non-null, system-generated
+  client_id         — foreign key to CRM client_id, non-null
+  company_name      — denormalised for join resilience
+  created_date      — ISO 8601 datetime, non-null
+  priority          — enum: low | medium | high | critical
+  category          — enum: billing | technical | onboarding | feature_request
+  status            — enum: open | pending | closed
+  resolution_time_hours — numeric, null if ticket is open
+  assigned_agent    — internal agent name or ID, non-null
+
+────────────────────────────────────────────────────────────
+3. UNIVERSAL DATA QUALITY RULES
+────────────────────────────────────────────────────────────
+ID fields (client_id, order_id, ticket_id):
+  - Must be non-null in every row
+  - Must be unique within their source system
+  - Must use a consistent prefix format (e.g. C001, ORD-10041, TKT-4801)
+
+Date and timestamp fields:
+  - Must conform to ISO 8601: YYYY-MM-DD for dates, YYYY-MM-DDTHH:MM:SSZ for datetimes
+  - Mixed formats (MM/DD/YYYY, epoch timestamps, relative strings) are not acceptable
+  - Null dates are only permitted in fields explicitly marked nullable (e.g. resolved_at)
+
+Currency and numeric fields:
+  - Must be stored as numeric types (float or integer), never as formatted strings
+  - No currency symbols, commas, or units embedded in the value (e.g. 84000, not "$84,000")
+  - Zero and null are semantically different — do not substitute one for the other
+
+Text fields:
+  - company_name must be normalised to title case before ingestion
+  - Trailing whitespace, leading punctuation, and trailing punctuation (periods, commas)
+    must be stripped during ETL
+  - Empty strings ("") are treated as null; do not use placeholder values like "N/A" or "Unknown"

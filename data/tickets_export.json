@@ -1,0 +1,112 @@
+[
+  {
+    "ticket_id": "TKT-4801",
+    "subject": "Satellite uplink dropping intermittently during peak hours",
+    "account_name": "acme corp.",
+    "priority": "high",
+    "status": "closed",
+    "created_at": "2026-01-08T09:14:22Z",
+    "resolved_at": "2026-01-10T16:45:00Z",
+    "assigned_agent": "Dev Patel",
+    "tags": ["uplink", "performance", "enterprise"]
+  },
+  {
+    "ticket_id": "TKT-4823",
+    "subject": "Ground control dashboard not loading for new sub-users",
+    "account_name": "Nexus Dynamics",
+    "priority": "medium",
+    "status": "closed",
+    "created_at": "2026-01-15T11:02:55Z",
+    "resolved_at": "2026-01-17T09:30:00Z",
+    "assigned_agent": "Yuki Tanaka",
+    "tags": ["dashboard", "permissions", "onboarding"]
+  },
+  {
+    "ticket_id": "TKT-4850",
+    "subject": "Request for additional beam coverage in Pacific region",
+    "account_name": "Orbital Sys.",
+    "priority": "low",
+    "status": "closed",
+    "created_at": "2026-01-21T14:30:10Z",
+    "resolved_at": "2026-02-03T12:00:00Z",
+    "assigned_agent": "Dev Patel",
+    "tags": ["coverage", "beam-plan", "expansion"]
+  },
+  {
+    "ticket_id": "TKT-4877",
+    "subject": "Billing invoice shows incorrect seat count for Q1",
+    "account_name": "VERTEX SOLUTIONS",
+    "priority": "high",
+    "status": "closed",
+    "created_at": "2026-02-01T08:55:40Z",
+    "resolved_at": "2026-02-04T17:20:00Z",
+    "assigned_agent": "Aisha Morrow",
+    "tags": ["billing", "invoice", "urgent"]
+  },
+  {
+    "ticket_id": "TKT-4902",
+    "subject": "API rate limit exceeded — integration failing on retry",
+    "account_name": "MERIDIAN TECH",
+    "priority": "high",
+    "status": "open",
+    "created_at": "2026-02-14T13:22:00Z",
+    "resolved_at": null,
+    "assigned_agent": "Dev Patel",
+    "tags": ["api", "rate-limit", "integration", "enterprise"]
+  },
+  {
+    "ticket_id": "TKT-4918",
+    "subject": "Onboarding walkthrough video links are broken",
+    "account_name": "Pinnacle Ind.",
+    "priority": "low",
+    "status": "closed",
+    "created_at": "2026-02-18T10:05:30Z",
+    "resolved_at": "2026-02-19T11:45:00Z",
+    "assigned_agent": "Yuki Tanaka",
+    "tags": ["onboarding", "content", "bug"]
+  },
+  {
+    "ticket_id": "TKT-4934",
+    "subject": "Latency spikes observed on trans-Atlantic routes",
+    "account_name": "atlas networks",
+    "priority": "medium",
+    "status": "open",
+    "created_at": "2026-02-25T16:40:15Z",
+    "resolved_at": null,
+    "assigned_agent": "Dev Patel",
+    "tags": ["latency", "routing", "performance"]
+  },
+  {
+    "ticket_id": "TKT-4961",
+    "subject": "Cannot export telemetry logs in CSV format",
+    "account_name": "solaris global",
+    "priority": "medium",
+    "status": "open",
+    "created_at": "2026-03-03T09:18:44Z",
+    "resolved_at": null,
+    "assigned_agent": "Aisha Morrow",
+    "tags": ["export", "telemetry", "bug"]
+  },
+  {
+    "ticket_id": "TKT-4975",
+    "subject": "SSO login failure after password policy update",
+    "account_name": "ACME",
+    "priority": "critical",
+    "status": "open",
+    "created_at": "2026-03-11T07:45:00Z",
+    "resolved_at": null,
+    "assigned_agent": "Yuki Tanaka",
+    "tags": ["sso", "auth", "critical", "enterprise"]
+  },
+  {
+    "ticket_id": "TKT-4989",
+    "subject": "Multi-site failover not triggering as configured",
+    "account_name": "Nexus Dynamics Inc",
+    "priority": "high",
+    "status": "open",
+    "created_at": "2026-03-17T14:10:33Z",
+    "resolved_at": null,
+    "assigned_agent": "Dev Patel",
+    "tags": ["failover", "redundancy", "configuration", "enterprise"]
+  }
+]
