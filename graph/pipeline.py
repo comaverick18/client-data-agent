@@ -1,13 +1,13 @@
 """
 graph/pipeline.py — LangGraph Orchestration
 ============================================
-Wires the 4-agent SpaceMesh data onboarding pipeline into a StateGraph.
+Wires the 4-agent client data onboarding pipeline into a StateGraph.
 
 Execution order:
   START
     → run_agent1   (Data Auditor — fully implemented)
     → human_approval
-    → run_agent2   (Readiness Scorer — placeholder)
+    → run_agent2   (Readiness Scorer — fully implemented)
     → human_approval
     → run_agent3   (Normalizer — placeholder)
     → human_approval
@@ -28,6 +28,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 from typing import TypedDict
 from langgraph.graph import StateGraph, START, END
+from agents.agent2_scorer import run_agent2
 
 
 # ---------------------------------------------------------------------------
@@ -102,20 +103,9 @@ def human_approval_3(state: PipelineState) -> PipelineState:
 
 
 # ---------------------------------------------------------------------------
-# Agent 2 — Readiness Scorer (placeholder)
+# Agent 2 — Readiness Scorer (fully implemented, imported above)
 # ---------------------------------------------------------------------------
-
-def run_agent2(state: PipelineState) -> PipelineState:
-    """
-    Placeholder: will score each data source against RAG-retrieved best
-    practices and surface a prioritised gap analysis.
-    """
-    print("\n[Agent 2] Readiness Scorer — not yet implemented.")
-    return {
-        **state,
-        "readiness_scores": {},
-        "current_stage": "scoring_complete",
-    }
+# run_agent2 is imported from agents/agent2_scorer.py
 
 
 # ---------------------------------------------------------------------------

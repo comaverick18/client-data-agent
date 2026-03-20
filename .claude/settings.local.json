@@ -5,7 +5,9 @@
       "Bash(venv/Scripts/python.exe -c \"import langgraph; print\\(langgraph.__version__\\)\")",
       "Bash(venv/Scripts/python.exe -c \"from langgraph.graph import StateGraph, START, END; print\\(''imports ok''\\)\")",
       "Bash(venv/Scripts/python.exe graph/pipeline.py)",
-      "Bash(venv/Scripts/pip install:*)"
+      "Bash(venv/Scripts/pip install:*)",
+      "Bash(venv/Scripts/python.exe -c \"import anthropic; print\\(''ok''\\)\")",
+      "Bash(venv/Scripts/python.exe agents/agent2_scorer.py)"
     ]
   }
 }

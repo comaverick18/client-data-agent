@@ -1,7 +1,7 @@
 """
 Agent 1 — Data Auditor
 ======================
-First agent in the SpaceMesh client data onboarding pipeline.
+First agent in the client data onboarding pipeline.
 
 Responsibility: Load all three raw data exports, inspect their structure,
 and surface quality issues (nulls, duplicates, column mismatches, naming
